@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flection Labs — Human Reflection Studio</title>
+  <meta name="description" content="Flection Labs builds personal audio tools for the moments that matter. Not a subscription. Not a library. Built around you. Singapore."/>
+  <meta property="og:title" content="Flection Labs — Human Reflection Studio"/>
+  <meta property="og:description" content="Personal audio tools built around you. Not Calm. Not Headspace. Yours."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://flectionlabs.com"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Flection Labs — Human Reflection Studio"/>
+  <meta name="twitter:description" content="Personal audio tools built around you. Memflect · Medflect · More coming 2026."/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:         #080f0a;
+      --green-deep:  #1A3322;
+      --green-light: #5A9E72;
+      --cream:       #F5EFE0;
+      --gold:        #C8924A;
+      --gold-light:  #E0B87A;
+      --text-cream:  #F0E8D8;
+      --text-muted:  rgba(240,232,216,0.48);
+      --warm-mid:    #8B6B4A;
+      --border-dark: rgba(90,158,114,0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--text-cream);
+      font-family: 'Syne', sans-serif;
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9990; opacity: 0.45;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 1.3rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(8,15,10,0.92);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-dark);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-cream); text-decoration: none;
+    }
+    .nav-logo em { font-style: italic; color: var(--gold); font-weight: 300; }
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-link {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--gold); }
+    .nav-dot {
+      width: 6px; height: 6px; background: var(--green-light);
+      border-radius: 50%; animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100%{opacity:1;transform:scale(1);}
+      50%{opacity:0.3;transform:scale(0.5);}
+    }
+    @media(max-width:600px){
+      nav { padding: 1.1rem 1.5rem; }
+      .nav-link { display: none; }
+    }
+
+    /* HERO */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 0 2rem;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 65%, rgba(90,158,114,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 35% at 15% 25%, rgba(200,146,74,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 85% 25%, rgba(200,146,74,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center;
+      width: 100%; max-width: 920px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--green-light);
+      margin-bottom: 1.4rem;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.4s;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 700; line-height: 0.92; letter-spacing: -0.02em;
+      color: var(--text-cream); margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
+    }
+    .hero-title .italic-line {
+      font-weight: 300; font-style: italic; color: var(--gold); display: block;
+    }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-weight: 300; font-size: clamp(1rem, 2.2vw, 1.3rem);
+      color: var(--text-muted); max-width: 420px;
+      line-height: 1.65; margin-bottom: 3.5rem;
+      opacity: 0; animation: fadeUp 1s ease forwards 0.8s;
+    }
+
+    /* WAVEFORM — pure CSS, zoom-proof */
+    .waveform {
+      width: 100%; max-width: 880px; height: 90px;
+      display: flex; align-items: flex-end; justify-content: center;
+      gap: 3px; overflow: hidden;
+      opacity: 0; animation: fadeUp 1s ease forwards 1.05s;
+    }
+    @media(max-width:600px){ .waveform { height: 56px; gap: 2px; } }
+
+    .wbar {
+      flex: 1; max-width: 8px; min-width: 2px;
+      border-radius: 3px 3px 2px 2px;
+      animation: waveAnim var(--dur) ease-in-out infinite alternate;
+      animation-delay: var(--delay);
+    }
+    @keyframes waveAnim {
+      0%   { height: var(--min-h); opacity: 0.3; }
+      100% { height: var(--max-h); opacity: 0.9; }
+    }
+
+    /* WAVE DIVIDE */
+    .wave-divide {
+      position: relative; height: 80px;
+      background: var(--ink); overflow: hidden;
+    }
+    .wave-divide::after {
+      content: ''; position: absolute; bottom: 0; left: -5%; right: -5%;
+      height: 110px; background: var(--cream);
+      border-radius: 55% 55% 0 0 / 70px 70px 0 0;
+    }
+
+    /* LIGHT SECTION */
+    #light { background: var(--cream); padding: 5rem 2rem 3rem; }
+
+    .tools-hd { text-align: center; margin-bottom: 3rem; }
+    .tools-eyebrow {
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--warm-mid); margin-bottom: 0.85rem;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .tools-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 800;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      line-height: 0.87; letter-spacing: -0.03em; color: var(--green-deep);
+      opacity: 0; transform: translateY(22px);
+      transition: opacity 0.7s ease 0.1s, transform 0.7s ease 0.1s;
+    }
+    .tools-title em { font-style: italic; font-weight: 300; color: var(--warm-mid); }
+    .tools-hd.visible .tools-eyebrow,
+    .tools-hd.visible .tools-title { opacity: 1; transform: translateY(0); }
+
+    /* CARDS */
+    .cards {
+      max-width: 980px; margin: 0 auto 1.5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+    }
+    .cards-coming {
+      max-width: 980px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem;
+    }
+    @media(max-width:700px){
+      .cards,.cards-coming { grid-template-columns: 1fr; }
+    }
+    @media(min-width:701px) and (max-width:900px){
+      .cards-coming { grid-template-columns: 1fr 1fr; }
+    }
+
+    .app-card {
+      border-radius: 22px; padding: 2.2rem 2rem 1.8rem;
+      text-decoration: none; display: flex; flex-direction: column;
+      min-height: 320px; position: relative; overflow: hidden;
+      will-change: transform;
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease, box-shadow 0.3s ease;
+    }
+    .app-card.visible { opacity: 1; transform: translateY(0); }
+    .app-card:nth-child(2){ transition-delay: 0.14s; }
+
+    .card-memflect {
+      background: linear-gradient(138deg,#160D28 0%,#231545 55%,#140D25 100%);
+      box-shadow: 0 10px 48px rgba(80,40,130,0.28),inset 0 1px 0 rgba(200,168,240,0.07);
+    }
+    .card-medflect {
+      background: linear-gradient(138deg,#0F1E14 0%,#1E3828 55%,#0C1910 100%);
+      box-shadow: 0 10px 48px rgba(35,80,55,0.32),inset 0 1px 0 rgba(110,200,140,0.07);
+    }
+    .card-coming {
+      background: var(--ink); border: 1px solid rgba(90,158,114,0.12);
+      box-shadow: 0 4px 24px rgba(8,15,10,0.15); min-height: 180px;
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.2s;
+    }
+    .card-coming:hover { border-color: rgba(200,146,74,0.2); }
+    .card-coming.visible { opacity: 1; transform: translateY(0); }
+    .card-coming:nth-child(2){ transition-delay: 0.1s; }
+    .card-coming:nth-child(3){ transition-delay: 0.2s; }
+
+    .card-glow {
+      position: absolute; border-radius: 50%;
+      filter: blur(55px); opacity: 0;
+      transition: opacity 0.45s ease; pointer-events: none;
+    }
+    .app-card:hover .card-glow { opacity: 1; }
+    .card-memflect .card-glow {
+      width: 220px; height: 220px;
+      background: radial-gradient(circle,rgba(155,100,220,0.38),transparent);
+      top: -70px; right: -70px;
+    }
+    .card-medflect .card-glow {
+      width: 220px; height: 220px;
+      background: radial-gradient(circle,rgba(70,155,100,0.38),transparent);
+      bottom: -70px; left: -70px;
+    }
+    .card-lines {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);
+      background-size: 42px 42px; border-radius: 22px;
+    }
+    .card-body { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; }
+
+    .card-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.59rem; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; padding: 0.28rem 0.75rem;
+      border-radius: 100px; margin-bottom: 1.3rem; width: fit-content;
+    }
+    .bdot { width: 5px; height: 5px; border-radius: 50%; animation: pulse 2.2s ease-in-out infinite; }
+    .card-memflect .card-badge { background: rgba(155,107,200,0.14); border: 1px solid rgba(155,107,200,0.28); color: #C9A8E8; }
+    .card-memflect .bdot { background: #C9A8E8; }
+    .card-medflect .card-badge { background: rgba(90,158,114,0.14); border: 1px solid rgba(90,158,114,0.28); color: #8ED4A8; }
+    .card-medflect .bdot { background: #8ED4A8; }
+    .card-coming .card-badge { background: rgba(200,146,74,0.08); border: 1px solid rgba(200,146,74,0.18); color: rgba(200,146,74,0.6); }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 700;
+      letter-spacing: -0.01em; color: #fff; margin-bottom: 0.65rem; line-height: 1;
+    }
+    .card-coming .card-name { font-size: 1.6rem; color: rgba(240,232,216,0.4); }
+    .card-desc { font-size: 0.82rem; line-height: 1.75; font-weight: 400; flex: 1; }
+    .card-memflect .card-desc { color: rgba(220,200,255,0.62); }
+    .card-medflect .card-desc { color: rgba(180,220,200,0.62); }
+    .card-coming .card-desc { color: rgba(240,232,216,0.25); font-size: 0.76rem; }
+
+    .card-foot {
+      margin-top: 1.8rem; display: flex; align-items: center;
+      justify-content: space-between; padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.055);
+    }
+    .card-price { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; }
+    .card-memflect .card-price { color: rgba(200,168,240,0.58); }
+    .card-medflect .card-price { color: rgba(140,212,168,0.58); }
+    .card-cta {
+      display: flex; align-items: center; gap: 0.45rem;
+      font-size: 0.76rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .card-memflect .card-cta { color: #C9A8E8; }
+    .card-medflect .card-cta { color: #8ED4A8; }
+    .arr {
+      display: inline-flex; width: 26px; height: 26px;
+      border-radius: 50%; align-items: center; justify-content: center;
+      transition: transform 0.22s ease;
+    }
+    .card-memflect .arr { background: rgba(155,107,200,0.18); }
+    .card-medflect .arr { background: rgba(90,158,114,0.18); }
+    .app-card:hover .arr { transform: translateX(4px); }
+
+    /* RYAN */
+    #ryan {
+      background: var(--cream); padding: 4rem 2rem 5rem;
+      border-top: 1px solid rgba(45,90,60,0.1);
+    }
+    .ryan-inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 1.5rem;
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .ryan-inner.visible { opacity: 1; transform: translateY(0); }
+    .ryan-label {
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--warm-mid);
+    }
+    .ryan-quote {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 300;
+      color: var(--green-deep); line-height: 1.5; max-width: 560px;
+    }
+    .ryan-bio {
+      font-size: 0.88rem; color: var(--warm-mid); line-height: 1.8; max-width: 480px;
+    }
+    .ryan-links { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .ryan-link {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--green-deep);
+      border: 1px solid rgba(45,90,60,0.25); border-radius: 999px;
+      padding: 0.45rem 1.1rem; text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .ryan-link:hover { background: rgba(45,90,60,0.07); border-color: rgba(45,90,60,0.45); }
+
+    /* FOOTER */
+    footer {
+      background: var(--green-deep);
+      padding: 3rem 2rem 2.5rem; text-align: center;
+    }
+    .foot-logo {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-cream); margin-bottom: 0.5rem;
+    }
+    .foot-logo em { font-style: italic; font-weight: 300; color: var(--gold); }
+    .foot-tagline {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 0.9rem; color: rgba(240,232,216,0.4); margin-bottom: 1.4rem;
+    }
+    .foot-line {
+      font-size: 0.7rem; color: rgba(240,232,216,0.32); letter-spacing: 0.04em; line-height: 2;
+    }
+    .foot-line a { color: rgba(200,146,74,0.65); text-decoration: none; }
+    .foot-line a:hover { color: var(--gold); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/" class="nav-logo">Flection<em>Labs</em></a>
+  <div class="nav-right">
+    <a href="https://memflect.app" target="_blank" class="nav-link">Memflect</a>
+    <a href="https://medflect.web.app" target="_blank" class="nav-link">Medflect</a>
+    <div class="nav-dot"></div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Flection Labs &nbsp;·&nbsp; Singapore &nbsp;·&nbsp; Est. 2025</p>
+    <h1 class="hero-title">
+      Built around<br>
+      <span class="italic-line">you.</span>
+    </h1>
+    <p class="hero-sub">Not an algorithm. Not a library of what millions of others are doing.</p>
+    <div class="waveform" id="waveform"></div>
+  </div>
+</section>
+
+<div class="wave-divide"></div>
+
+<section id="light">
+  <div class="tools-hd" id="toolsHd">
+    <p class="tools-eyebrow">What we build</p>
+    <h2 class="tools-title">Our<br><em>Tools.</em></h2>
+  </div>
+
+  <div class="cards">
+    <a href="https://memflect.app" target="_blank" class="app-card card-memflect" id="c1">
+      <div class="card-lines"></div><div class="card-glow"></div>
+      <div class="card-body">
+        <span class="card-badge"><span class="bdot"></span>Live Now</span>
+        <h3 class="card-name">Memflect</h3>
+        <p class="card-desc">Turn your memories into cinematic audio reflections — narrated in your own cloned voice, set to music, tied to a photo. Keep them forever or send them as a gift.</p>
+        <div class="card-foot">
+          <span class="card-price">One-time · $3.99</span>
+          <span class="card-cta">Open app <span class="arr"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 5.5H10M10 5.5L6 1.5M10 5.5L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+        </div>
+      </div>
+    </a>
+    <a href="https://medflect.web.app" target="_blank" class="app-card card-medflect" id="c2">
+      <div class="card-lines"></div><div class="card-glow"></div>
+      <div class="card-body">
+        <span class="card-badge"><span class="bdot"></span>Pre-launch · Join Now</span>
+        <h3 class="card-name">Medflect</h3>
+        <p class="card-desc">A personal meditation built entirely around your moment — your words, your voice, your soundscape. No library. No subscription. Launching May 15th, 2026.</p>
+        <div class="card-foot">
+          <span class="card-price">Founding circle · Free month</span>
+          <span class="card-cta">Join waitlist <span class="arr"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 5.5H10M10 5.5L6 1.5M10 5.5L6 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <div class="cards-coming" style="margin-top:1.25rem;">
+    <div class="app-card card-coming" id="c3">
+      <div class="card-body">
+        <span class="card-badge">Coming Jul 2026</span>
+        <h3 class="card-name">Subflect</h3>
+        <p class="card-desc">Hypnosis-guided behavioral change. Your voice. Your moment.</p>
+      </div>
+    </div>
+    <div class="app-card card-coming" id="c4">
+      <div class="card-body">
+        <span class="card-badge">Coming Sep 2026</span>
+        <h3 class="card-name">Flectale</h3>
+        <p class="card-desc">Something is brewing. Stay close.</p>
+      </div>
+    </div>
+    <div class="app-card card-coming" id="c5">
+      <div class="card-body">
+        <span class="card-badge">Coming Dec 2026</span>
+        <h3 class="card-name">Memgar</h3>
+        <p class="card-desc">A holiday season reflection tool. Something to give.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ryan">
+  <div class="ryan-inner" id="ryanInner">
+    <span class="ryan-label">The Builder</span>
+    <p class="ryan-quote">"I got tired of apps that weren't built for me — so I started building them myself."</p>
+    <p class="ryan-bio">
+      Ryan McLeod is a solo indie developer and stay-at-home dad based in Singapore,
+      completing an MSc in AI/ML. Flection Labs is his one-man studio for personal
+      reflection tools — apps that actually know who you are and what you're going through,
+      instead of serving you the same thing as everyone else.
+    </p>
+    <div class="ryan-links">
+      <a href="https://www.linkedin.com/in/ryanmcleodsg" target="_blank" class="ryan-link">LinkedIn</a>
+      <a href="mailto:ryan@flectionlabs.com" class="ryan-link">Email Ryan</a>
+      <a href="https://memflect.app" target="_blank" class="ryan-link">Memflect</a>
+      <a href="https://medflect.web.app" target="_blank" class="ryan-link">Medflect</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p class="foot-logo">Flection<em>Labs</em></p>
+  <p class="foot-tagline">Human reflection studio.</p>
+  <p class="foot-line">
+    Built by <a href="https://www.linkedin.com/in/ryanmcleodsg" target="_blank">Ryan McLeod</a>
+    &nbsp;·&nbsp; Singapore 🇸🇬
+    &nbsp;·&nbsp; <a href="mailto:ryan@flectionlabs.com">ryan@flectionlabs.com</a>
+  </p>
+  <p class="foot-line">1090 Lower Delta Road, #04-16, Singapore 169201</p>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// WAVEFORM — pure CSS bars, zoom-proof
+(function() {
+  const container = document.getElementById('waveform');
+  const COUNT = 74;
+
+  function profile(i, total) {
+    const x = i / (total - 1);
+    const bell  = Math.sin(x * Math.PI) * 0.72;
+    const peak1 = Math.sin(x * Math.PI * 2.4 + 0.9)  * 0.18;
+    const peak2 = Math.sin(x * Math.PI * 4.2 + 1.3)  * 0.11;
+    const grain = Math.sin(x * Math.PI * 8.1 + 0.5)  * 0.07;
+    return Math.max(0.07, Math.min(1, bell + peak1 + peak2 + grain));
+  }
+
+  for (let i = 0; i < COUNT; i++) {
+    const bar  = document.createElement('div');
+    bar.className = 'wbar';
+
+    const p    = profile(i, COUNT);
+    const maxH = Math.round(10 + p * 80);
+    const minH = Math.max(4, Math.round(maxH * 0.18));
+
+    // Color sweep: gold left → warm cream center → green right
+    const x = i / (COUNT - 1);
+    let r, g, b;
+    if (x < 0.33) {
+      const t = x / 0.33;
+      r = Math.round(200 - t * 15); g = Math.round(146 + t * 44); b = Math.round(74 + t * 56);
+    } else if (x < 0.67) {
+      const t = (x - 0.33) / 0.34;
+      r = Math.round(185 + t * 15); g = Math.round(190 + t * 10); b = Math.round(130 + t * 44);
+    } else {
+      const t = (x - 0.67) / 0.33;
+      r = Math.round(200 - t * 115); g = Math.round(200 - t * 42); b = Math.round(174 - t * 62);
+    }
+
+    const dur   = (0.75 + Math.random() * 1.5).toFixed(2) + 's';
+    const delay = (Math.random() * 2).toFixed(2) + 's';
+
+    bar.style.cssText = `
+      --min-h:${minH}px;
+      --max-h:${maxH}px;
+      --dur:${dur};
+      --delay:${delay};
+      background:rgba(${r},${g},${b},0.72);
+      height:${minH}px;
+    `;
+    container.appendChild(bar);
+  }
+})();
+
+// SCROLL REVEAL
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+['toolsHd','c1','c2','c3','c4','c5','ryanInner'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) io.observe(el);
+});
+
+// CARD TILT
+document.querySelectorAll('.app-card:not(.card-coming)').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    card.style.transform = `perspective(1100px) rotateY(${x*12}deg) rotateX(${-y*8}deg) translateZ(12px) scale(1.01)`;
+    card.style.transition = 'box-shadow 0.08s ease';
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(1100px) rotateX(0) rotateY(0) translateZ(0) scale(1)';
+    card.style.transition = 'transform 0.5s ease, box-shadow 0.3s ease, opacity 0.65s ease';
+  });
+});
+</script>
+</body>
+</html>
